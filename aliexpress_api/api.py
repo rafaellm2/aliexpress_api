@@ -128,45 +128,45 @@ class AliexpressApi:
         else:
             raise ProductsNotFoudException('Affiliate links not available')
         
-        def get_products_list(self,
-            category_ids: Union[str, List[str]] = None,
-            delivery_days: int = None,
-            fields: Union[str, List[str]] = None,
-            keywords: str = None,
-            max_sale_price: int = None,
-            min_sale_price: int = None,
-            page_no: int = None,
-            page_size: int = None,
-            platform_product_type: models.ProductType = None,
-            ship_to_country: str = None,
-            sort: models.SortBy = None,
-            **kwargs) -> models.ProductResponse:
-            #aliexpress.affiliate.product.query
+    def get_products_list(self,
+        category_ids: Union[str, List[str]] = None,
+        delivery_days: int = None,
+		fields: Union[str, List[str]] = None,
+		keywords: str = None,
+		max_sale_price: int = None,
+		min_sale_price: int = None,
+		page_no: int = None,
+		page_size: int = None,
+		platform_product_type: models.ProductType = None,
+		ship_to_country: str = None,
+		sort: models.SortBy = None,
+        **kwargs) -> models.ProductResponse:
+        #aliexpress.affiliate.product.query
 
-            request = aliapi.rest.AliexpressAffiliateProductQueryRequest()
-            request.app_signature = self._app_signature
-            request.category_ids = get_list_as_string(category_ids)
-            request.delivery_days = str(delivery_days)
-            request.fields = get_list_as_string(fields)
-            request.keywords = keywords
-            request.max_sale_price = max_sale_price
-            request.min_sale_price = min_sale_price
-            request.page_no = page_no
-            request.page_size = page_size
-            request.platform_product_type = platform_product_type
-            request.ship_to_country = ship_to_country
-            request.sort = sort
-            request.target_currency = self._currency
-            request.target_language = self._language
-            request.tracking_id = self._tracking_id
+        request = aliapi.rest.AliexpressAffiliateProductQueryRequest()
+        request.app_signature = self._app_signature
+        request.category_ids = get_list_as_string(category_ids)
+        request.delivery_days = str(delivery_days)
+        request.fields = get_list_as_string(fields)
+        request.keywords = keywords
+        request.max_sale_price = max_sale_price
+        request.min_sale_price = min_sale_price
+        request.page_no = page_no
+        request.page_size = page_size
+        request.platform_product_type = platform_product_type
+        request.ship_to_country = ship_to_country
+        request.sort = sort
+        request.target_currency = self._currency
+        request.target_language = self._language
+        request.tracking_id = self._tracking_id
 
-            response = api_request(request, 'aliexpress.affiliate.product.query')
+        response = api_request(request, 'aliexpress.affiliate.product.query')
 
-            if response.current_record_count > 0:
-                response.products = parse_products(response.products.product)
-                return response
-            else:
-                raise ProductsNotFoudException('No products found with current parameters')
+        if response.current_record_count > 0:
+            response.products = parse_products(response.products.product)
+            return response
+        else:
+            raise ProductsNotFoudException('No products found with current parameters')
 
 
     def get_hotproducts(self,
